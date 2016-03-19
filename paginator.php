@@ -7,6 +7,7 @@
  * Time: 20:49
  */
 namespace Hatsunyan;
+
 Class Paginator
 {
     protected $languages =
