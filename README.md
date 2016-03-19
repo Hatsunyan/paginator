@@ -2,8 +2,10 @@
 
 created ul list links for paginations
 
->demo 
->https://hatsunyan.github.io/paginator/
+>demo  
+>https://hatsunyan.github.io/paginator/  
+>css form demo  
+>https://hatsunyan.github.io/paginator/paginator.css
 
 # Usage
 
