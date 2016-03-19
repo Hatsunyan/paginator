@@ -1,3 +1,8 @@
+# php paginator
+
+created ul list links for paginations
+
+
 # Usage
 
 ## Simple usage
