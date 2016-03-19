@@ -1,0 +1,10 @@
+{
+  "name": "Hatsunyan/paginator",
+  "description": "php paginator",
+  "keywords": ["paginator, pagination, page"],
+  "version": "0.9",
+  "license": "MIT",
+  "autoload": {
+    "files": ["paginator.php"]
+  }
+}
