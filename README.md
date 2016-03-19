@@ -2,6 +2,8 @@
 
 created ul list links for paginations
 
+>demo 
+>https://hatsunyan.github.io/paginator/
 
 # Usage
 
