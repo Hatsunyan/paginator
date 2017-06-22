@@ -2,7 +2,7 @@
   "name": "hatsunyan/paginator",
   "description": "php paginator",
   "keywords": ["paginator", "pagination", "page"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "authors": [
     {"name": "Hatsunyan", "email": "hatsune333@gmail.com"}

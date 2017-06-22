@@ -161,7 +161,7 @@ Class Paginator
      * @param array|string|bool $nextPrev
      * @return Paginator
      */
-    public function setCustomLang(array $fistLast, array $nextPrev = []) : Paginator
+    public function setCustomLang($fistLast, $nextPrev = []) : Paginator
     {
         if($fistLast)
         {
