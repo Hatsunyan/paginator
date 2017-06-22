@@ -3,7 +3,7 @@
 /**
  * Created by PhpStorm.
  * User: Hatsunyan
- * Date: 17.03.2016
+ * Date: 17.03.2017
  * Time: 20:49
  */
 namespace Hatsunyan;
@@ -26,6 +26,8 @@ Class Paginator
     protected $linkPatternStart  = '/';
     protected $linkPatternEnd    = '';
     protected $ulClass           = 'paginator';
+    protected $useUlWrapper      = true;
+    protected $activePageClass   = 'active';
     // vars
     protected $currentPage       = 1;
     protected $lastPage          = 1;
@@ -38,7 +40,7 @@ Class Paginator
      * @param int $itemsOnPage
      * @param int $currentPage
      */
-    function __construct($items = 1, $itemsOnPage = 1, $currentPage = 1)
+    public function __construct(int $items = 1, int $itemsOnPage = 1, int $currentPage = 1)
     {
         $this->setPages($items, $itemsOnPage, $currentPage);
         return $this;
@@ -48,9 +50,9 @@ Class Paginator
      * @param int $items - total items
      * @param int $itemsOnPage
      * @param int $currentPage
-     * @return $this
+     * @return Paginator
      */
-    function setPages($items = 1, $itemsOnPage = 1, $currentPage = 1)
+    public function setPages(int $items = 1, int $itemsOnPage = 1, int $currentPage = 1) : Paginator
     {
         $this->lastPage = ceil($items / $itemsOnPage);
         $this->setCurrentPage($currentPage);
@@ -59,9 +61,9 @@ Class Paginator
 
     /**
      * @param int $page
-     * @return $this
+     * @return Paginator
      */
-    function setCurrentPage($page)
+    public function setCurrentPage(int $page) : Paginator
     {
         $page = $page > $this->lastPage ? $this->lastPage : $page;
         $page = $page < 1 ? 1 : $page;
@@ -71,9 +73,9 @@ Class Paginator
 
     /**
      * @param string $pattern like /news/{p}, where {p} - page number
-     * @return $this
+     * @return Paginator
      */
-    function setUrlPattern($pattern)
+    public function setUrlPattern(string $pattern) : Paginator
     {
         $array = explode('{p}', $pattern);
         $this->linkPatternStart = $array[0];
@@ -84,9 +86,9 @@ Class Paginator
     /**
      * show next and prev buttons
      * @param bool $show
-     * @return $this
+     * @return Paginator
      */
-    function showNextPrev($show)
+    public function showNextPrev(bool $show) : Paginator
     {
         $this->showSteps = $show;
         return $this;
@@ -95,18 +97,18 @@ Class Paginator
     /**
      * show last and first button
      * @param bool $show
-     * @return $this
+     * @return Paginator
      */
-    function showLastFirst($show)
+    public function showLastFirst(bool $show) : Paginator
     {
         $this->showLastFirst = $show;
         return $this;
     }
 
     /**
-     * out html
+     * out html     *
      */
-    function render()
+    public function render() : void
     {
         if ($this->html == null) {
             $this->makeHtml();
@@ -118,7 +120,7 @@ Class Paginator
      * return html
      * @return  string|null
      */
-    function getHtml()
+    public function getHtml() : ?string
     {
         if ($this->html == null) {
             $this->makeHtml();
@@ -128,21 +130,23 @@ Class Paginator
 
     /**
      * @param int $items
+     * @return Paginator
      */
-    function setMaxItems($items)
+    public function setMaxItems(int $items) : Paginator
     {
         if($items % 2)
         {
             $items++;
         }
         $this->maxItems = $items;
+        return $this;
     }
 
     /**
      * @param string $lang |ru|en|arrow
      * @return $this
      */
-    function setLang($lang)
+    public function setLang(string $lang)
     {
         if(isset($this->languages[$lang]))
         {
@@ -155,9 +159,9 @@ Class Paginator
      * set your land like ['first','last'],['prev','next'] | false,'en' | '...','ru'
      * @param array|string|bool $fistLast
      * @param array|string|bool $nextPrev
-     * @return $this
+     * @return Paginator
      */
-    function setCustomLang($fistLast, $nextPrev = false)
+    public function setCustomLang(array $fistLast, array $nextPrev = []) : Paginator
     {
         if($fistLast)
         {
@@ -175,7 +179,7 @@ Class Paginator
                 }
             }
         }
-        if($nextPrev)
+        if(!empty($nextPrev))
         {
             if(is_array($nextPrev))
             {
@@ -201,37 +205,86 @@ Class Paginator
 
     /** set ul class for html
      * @param string $class
-     * @return $this
+     * @return Paginator
      */
-    function setUlClass($class)
+    public function setUlClass(string $class) : Paginator
     {
         $this->ulClass = $class;
         return $this;
     }
 
-    protected function makeHtml()
+    /**
+     * @param bool $use
+     * @return Paginator
+     */
+    public function useUlWrapper(bool $use) : Paginator
     {
-        if ($this->lastPage == 1) {
-            $this->html = false;
-            return $this;
-        }
-        $this->makeArray();
-        $this->html .= '<ul class="'.$this->ulClass.'">';
-        foreach ($this->pagesArr as $p) {
-            $this->html .= '<li>';
-            if ($p['page'] != $this->currentPage) {
-                $this->html .= '<a href="' . $p['link'] . '">' . $p['title'] . '</a>';
-            } else {
-                $this->html .= '<a class="active">' . $p['title'] . '</a>';
-            }
-            $this->html .= '</li>';
-
-        }
-        $this->html .= '</ul>';
+        $this->useUlWrapper = $use;
         return $this;
     }
 
-    protected function addToArr($start, $end)
+    /**
+     * @return Paginator
+     */
+    public function refreshHtml() : Paginator
+    {
+        $this->html = null;
+        return $this;
+    }
+
+    /**
+     * @param string $class
+     * @return Paginator
+     */
+    public function setActivePageClass(string $class) : Paginator
+    {
+        $this->activePageClass = $class;
+        return $this;
+    }
+
+    /**
+     * @return Paginator
+     */
+    protected function makeHtml() : Paginator
+    {
+        if ($this->lastPage == 1) {
+            $this->html = null;
+            return $this;
+        }
+        if(empty($this->pagesArr))
+        {
+            $this->makeArray();
+        }
+        if($this->useUlWrapper)
+        {
+            $this->html .= '<ul class="'.$this->ulClass.'">';
+        }
+
+        foreach ($this->pagesArr as $p)
+        {
+            if($this->useUlWrapper)
+            {
+                $this->html .= '<li>';
+            }
+            if ($p['page'] != $this->currentPage)
+            {
+                $this->html .= '<a href="' . $p['link'] . '">' . $p['title'] . '</a>';
+            } else {
+                $this->html .= '<a class="'.$this->activePageClass.'">' . $p['title'] . '</a>';
+            }
+            if($this->useUlWrapper)
+            {
+                $this->html .= '</li>';
+            }
+        }
+        if($this->useUlWrapper)
+        {
+            $this->html .= '</ul>';
+        }
+        return $this;
+    }
+
+    protected function addToArr(int $start, int $end) : void
     {
         $end = ($this->lastPage < $end ? $this->lastPage : $end);
         for ($i = $start; $i <= $end; $i++) {
@@ -243,7 +296,7 @@ Class Paginator
         }
     }
 
-    protected function addLast()
+    protected function addLast() : void
     {
         if(!$this->showLastFirst)
         {
@@ -256,7 +309,7 @@ Class Paginator
         ];
     }
 
-    protected function addFirst()
+    protected function addFirst() : void
     {
         if(!$this->showLastFirst)
         {
@@ -269,7 +322,7 @@ Class Paginator
         ];
     }
 
-    protected function addStepBack()
+    protected function addStepBack() : void
     {
         if (!$this->showSteps) {
             return;
@@ -282,7 +335,7 @@ Class Paginator
         ];
     }
 
-    protected function addStepForward()
+    protected function addStepForward() : void
     {
         if (!$this->showSteps) {
             return;
@@ -295,7 +348,10 @@ Class Paginator
         ];
     }
 
-    protected function makeArray()
+    /**
+     * @return Paginator
+     */
+    protected function makeArray() : Paginator
     {
         $max = ($this->maxItems < $this->lastPage ? $this->maxItems : $this->lastPage);
         // few pages
@@ -349,4 +405,3 @@ Class Paginator
     }
 
 }
-

@@ -49,6 +49,17 @@ set false to disable. default = true
 ```php
 $pagitaror->showLastFirst(false);
 ```
+**setUlClass**
+set ul class use for style. default = paginator
+```php
+$paginator->setUlClass('custom-paginator');
+```
+**setActivePageClass**
+set active page class use for style. default = active
+```php
+$paginator->setUlClass('custom-active');
+```
+
 **render**
 echo completed html
 ```php
@@ -67,6 +78,21 @@ max items created without next/prev/first/last/current, must be even, or be incr
 ```php
 $paginator->setMaxItems(8)
 ```
+**useUlWrapper**
+output html style if true all link inside in ul list or just list of a tags
+default true
+```php
+$paginator->useUlWrapper(false);
+```
+**refreshHtml**
+set created html to null and u can create html again with new settings like a class or without ul wrap
+```php
+$paginator->useUlWrapper(false);
+$htmlWithUlWprap = $paginator->getHtml();
+$paginator->refreshHtml()->useUlWrapper(true);
+$htmlWithoutUlWprap = $paginator->getHtml();
+```
+
 **setLang**
 set language. en|ru|arrows. arrows - use "»" instead text. default = 'ru'
 ```php
@@ -83,8 +109,5 @@ $paginator->setCustomLang(['start','end'],'...'); //now next and prev have title
 // you can use already setted langs
 $paginator->setCustomLang('en','arrows');
 ```
-**setUlClass**
-set ul class use for style. default = paginator
-```php
-$paginator->setUlClass('custom-paginator');
-```
+
+

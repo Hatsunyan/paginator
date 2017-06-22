@@ -2,9 +2,17 @@
   "name": "hatsunyan/paginator",
   "description": "php paginator",
   "keywords": ["paginator", "pagination", "page"],
-  "version": "0.9",
+  "version": "1.0.0",
   "license": "MIT",
+  "authors": [
+    {"name": "Hatsunyan", "email": "hatsune333@gmail.com"}
+  ],
+  "require": {
+    "php": ">=7.1"
+  },
   "autoload": {
-    "files": ["paginator.php"]
+    "psr-4": {
+      "Hatsunyan\\Paginator\\": "/src"
+    }
   }
 }
